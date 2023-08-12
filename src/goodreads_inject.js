@@ -92,7 +92,7 @@ function getOverdriveAvailability() {
 
 		// inject the table we're going to populate
 		document.querySelector('.BookPageMetadataSection__description').insertAdjacentHTML("afterend", "<div id='AGtable'><table><tr>\
-	<td valign=top><b>Availability on Overdrive:</b></td>\
+	<td valign=top><b>Libby Availability:</b></td>\
 	<td style='padding-left:10px;white-space:nowrap' valign=top class='AGAVAIL" + id + "'>" + libraryDivPlaceholders + "\
 	</td></tr></table></div>");
 		// send a message for the background page to make the request
@@ -111,7 +111,7 @@ function getOverdriveAvailability() {
 
 			// set a "Loading..." message for this listing
 			element.querySelector(".communityRating").parentElement.insertAdjacentHTML("afterend","<div id='AGtable'><table><tr>\
-	<td valign=top><b>Availability on Overdrive:</b></td>\
+	<td valign=top><b>Libby Availability:</b></td>\
 	<td style='padding-left:10px' valign=top class='AGAVAIL" + id + "'>" + libraryDivPlaceholders + "\
 	</td></tr></table></div>");
 			// send a message for the background page to make the request
