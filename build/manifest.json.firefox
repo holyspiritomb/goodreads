@@ -1,7 +1,7 @@
 {
-  "name": "Available Reads",
-  "short_name": "AvailableReads",
-  "version": "4.2.3",
+  "name": "Available Reads Fork",
+  "short_name": "AvailableReadsFork",
+  "version": "4.2.4",
   "manifest_version": 3,
   "description": "Displays availability of ebooks and audiobooks from your local library on GoodReads pages.",
   "homepage_url": "http://github.com/rhollister",
@@ -59,7 +59,7 @@
   ],
   "browser_specific_settings": {
     "gecko": {
-      "id": "{4bcad1d2-b119-4ade-9807-1c3d60039c24}"
+      "id": "{cd2ae9a4-2506-4926-89d1-445ead7507d0}"
     }
   }
 }

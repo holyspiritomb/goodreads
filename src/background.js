@@ -49,6 +49,13 @@ async function lookupOverdriveURL(libraryLink, libraryName, elementID, tabId) {
   });
 }
 
+function odSearchToLibby(a) {
+    let url = a;
+    let libbyUrl = url.replace("http:", "https:").replace("://", "://libbyapp.com/search/").replace(".overdrive.com/search/title?query=", "/search/query-").replace("&creator=", "%20");
+    libbyUrl = libbyUrl + "/page-1";
+    return libbyUrl;
+}
+
 function searchOverdrive(requestInfo) {
   // load strings for different libraries
   chrome.storage.sync.get("libraries", async function(obj) {
@@ -74,6 +81,7 @@ function searchOverdrive(requestInfo) {
       } else {
          searchUrl = "http://" + library.url + "/BANGSearch.dll?Type=FullText&FullTextField=All&more=1&FullTextCriteria=" + encodeURIComponent(searchTerm);
       }
+      console.log(searchUrl);
       const response = await fetch(searchUrl);
       const data = await response.text();
       parseOverdriveResults(data, {
@@ -133,7 +141,8 @@ function parseOverdriveResults(data, requestInfo) {
           holds: book.isAvailable ? null : book.holdsCount,
           isAudio: book.type.id == "audiobook",
           alwaysAvailable: book.availabilityType == "always",
-          url: "http://" + requestInfo.libraryShortName + ".overdrive.com/media/" + book.id,
+          //url: "http://" + requestInfo.libraryShortName + ".overdrive.com/media/" + book.id,
+          url: "https://libbyapp.com/library/" + requestInfo.libraryShortName + "/similar-" + book.id + "/page-1/" + book.id,
           library: requestInfo.libraryShortName
         });
       }
@@ -178,7 +187,7 @@ function parseOverdriveResults(data, requestInfo) {
             holds: holds,
             isAudio: isAudio,
             alwaysAvailable: alwaysAvailable,
-            url: requestInfo.searchUrl,
+            url: odSearchToLibby(requestInfo.searchUrl),
             library: requestInfo.libraryShortName
           });
         }
@@ -193,7 +202,7 @@ function parseOverdriveResults(data, requestInfo) {
     libraryShortName: requestInfo.libraryShortName,
     libraryStr: requestInfo.libraryStr,
     searchTerm: requestInfo.searchTerm,
-    url: requestInfo.searchUrl,
+    url: odSearchToLibby(requestInfo.searchUrl),
     books: books
   });
 }

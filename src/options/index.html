@@ -1,5 +1,8 @@
 <head>
-  <title>Available Reads</title>
+  <title>Available Reads Fork</title>
+<script src="./jquery-3.7.0.min.js"></script>
+<script src="./settings.js"></script>
+<script type="text/javascript" src="./exports.js"></script>
   <style>
     td {
       vertical-align: text-top;
@@ -69,7 +72,7 @@ label {
 <body bgcolor='#d3d3b3'>
 	<center>
 		<div id="container">
-			<img id="mainicon" src="icon.png"><font face='Georgia, "Times New Roman", serif' size=20>Available Goodreads</font>
+			<img id="mainicon" src="icon.png"><font face='Georgia, "Times New Roman", serif' size=20>Available Goodreads Fork</font>
 			<br/><br/>
 			<div class="description">
 				<div class="subheading">Easy setup:</div>
@@ -120,12 +123,13 @@ label {
             Add a library:<br/>
             <label id="nameLabel" for="nameText">Library Name: </label>
             <label id="urlLabel" for="urlText">OverDrive URL: </label>
+            <button id="exportButton">Export Libraries</button>
           </td>
           <td>
            <br/>
            <input class="text" id="nameText"/>
-           <input class="text" id="urlText"/>
-           <input id="newDesign" type="checkbox"><label for="newDesign">Uses old OverDrive site</label>
+           <input class="text" id="urlText" value=".overdrive.com"/>
+           <input id="newDesign" type="checkbox"><label for="newDesign">Uses new OverDrive site</label>
            <br/>
            <span id="errorText">
              Error: OverDrive URL<br/>must contain
@@ -138,6 +142,13 @@ label {
           <select id="libraryList" size="5" style="width:200px;"></select>
           <button id="deleteButton">Delete</button>
         </td>
+      </tr>
+      <tr>
+          <td colspan="3">
+
+            <textarea id="exportBox" name="exportBox" style="width:100%;height:100px;margin-left:auto;margin-right:auto;"></textarea>
+            <button id="importButton">Import Libraries</button>
+          </td>
       </tr>
     </table>
     <div class="description">
@@ -182,6 +193,4 @@ label {
   </div>
 </center>
 
-<script src="./jquery-3.7.0.min.js"></script>
-<script src="./settings.js"></script>
 </body>
