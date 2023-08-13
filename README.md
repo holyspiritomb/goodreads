@@ -1,31 +1,47 @@
-# Available Reads Fork
-Displays listings on Goodreads of loan availability of ebooks and audiobooks through your local library's Overdrive account.
+# Available Reads Forked
+Displays listings on Goodreads of loan availability of ebooks and audiobooks through your local library's OverDrive account.
 
-This fork adds import and export functionality, and has links point to Libby instead of Overdrive. Currently, this fork can only be built manually. It was originally based on a now-deleted fork by gradiian and is now based on rhollister's upstream.
+## Differences from rhollister's Available Reads extension
 
-I primarily test on Kiwi Browser on Android.
+* Injected links point to Libby instead of OverDrive. (You still need to give an OverDrive url in your configuration, though.)
+* Import/export functionality for more easily copying configuration.
+* Goodreads single book pages feature a small icon that is a link to the extension's configuration page.
 
 ## Building
 
 For chromium based browsers:
-
 ```bash
 git clone https://github.com/holyspiritomb/goodreads goodreads
 cd goodreads
 cd build
 ./build_chrome.sh
 ```
+You will find `availablereads-chrome.zip` in the repo root.
 
-For Firefox based browsers:
-
+For Mozilla based browsers:
 ```bash
 git clone https://github.com/holyspiritomb/goodreads goodreads
 cd goodreads
 cd build
 ./build_firefox.sh
 ```
+You will find `availablereads-firefox.zip` in the repo root.
 
+## Future Goals
 
-![Screenshot](https://github.com/holyspiritomb/goodreads/raw/main/Screenshot_1.jpg)
+* Have availability on AMO as an experimental addon
+* Generate signed `*.crx` releases
+* Differentiate visually between multiple libraries' results
+* Import and export via text files
+* Use Libby API instead of OverDrive for queries
+* Automate builds with git actions
 
-![Screenshot](https://github.com/holyspiritomb/goodreads/raw/main/Screenshot_2.jpg)
+## Non-goals
+
+* Hoopla integration
+* Integration with catalogs for your library's physical media
+* Releases on Chrome web store
+
+## Acknowledgements
+
+Thanks to [gradiian](https://github.com/gradiian), over whose now-deleted fork I originally figured out the import/export feature. Thanks to [rhollister](https://github.com/rhollister) for all his hard work on [the upstream extension](https://github.com/rhollister/goodreads). I am deeply indebted to both of you.
