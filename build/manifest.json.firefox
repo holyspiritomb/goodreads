@@ -1,10 +1,10 @@
 {
-  "name": "Available Reads Fork",
+  "name": "Available Reads Forked",
   "short_name": "AvailableReadsFork",
-  "version": "4.2.4",
+  "version": "2.0.0",
   "manifest_version": 3,
-  "description": "Displays availability of ebooks and audiobooks from your local library on GoodReads pages.",
-  "homepage_url": "http://github.com/rhollister",
+  "description": "Displays availability of Libby ebooks and audiobooks from your local library on GoodReads pages.",
+  "homepage_url": "http://github.com/holyspiritomb/goodreads",
   "icons": {
     "16": "icons/icon16.png",
     "48": "icons/icon48.png",
@@ -59,7 +59,7 @@
   ],
   "browser_specific_settings": {
     "gecko": {
-      "id": "{cd2ae9a4-2506-4926-89d1-445ead7507d0}"
+      "id": "availablereads@holyspiritomb"
     }
   }
 }
