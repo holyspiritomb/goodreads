@@ -106,6 +106,8 @@ function validateInput() {
 	loadLibraries();
 	// disable all buttons
 	$("button").prop('disabled', true);
+    $("#exportButton").prop('disabled', false);
+    $("#importButton").prop('disabled', false);
 	$("#errorText").hide();
 	$("#successText").hide();
 	// when a library is selected, populate input fields
@@ -257,3 +259,26 @@ function validateInput() {
 			});
 		});
 	});
+
+    /* $("#exportButton").click(function () {
+        console.log("export clicked");
+        chrome.storage.sync.get("libraries", function (obj) {
+            console.log(obj);
+            let libraries = JSON.stringify(obj["libraries"]);
+            $("#exportBox").text(libraries);
+        });
+    });
+
+    $("#importButton").click(function () {
+        $("#importButton").prop('disabled',true);
+        console.log("import clicked");
+        let importedlibraries = $("#exportBox").value;
+        console.log(importedlibraries);
+        let implibraries = JSON.parse(importedlibraries);
+        console.log(implibraries);
+        chrome.storage.sync.set({
+            libraries: implibraries
+        });
+    }); */
+
+//document.addEventListener('DOMContentLoaded', importExport);
