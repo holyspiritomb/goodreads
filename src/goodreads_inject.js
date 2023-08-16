@@ -27,7 +27,7 @@ function sortRowsByStatus() {
 		bookList.push(element);
 		if (!waitingOnAvailability) {
 			for (var l in libraryClassNames) {
-				if (element.hasClass(libraryClassNames[l])) {
+				if (element.classList.contains(libraryClassNames[l])) {
 					waitingOnAvailability = true;
 					break;
 				}
@@ -37,8 +37,8 @@ function sortRowsByStatus() {
 
 	// sort books into lists by their current status
 	bookList.sort(function(a, b) {
-		x = parseFloat($(a).getAttribute("AGsortScore"));
-		y = parseFloat($(b).getAttribute("AGsortScore"));
+		x = parseFloat(a.getAttribute("AGsortScore"));
+		y = parseFloat(b.getAttribute("AGsortScore"));
 		if (x < y) {
 			return -1;
 		}
@@ -56,11 +56,11 @@ function sortRowsByStatus() {
 	var prevRow = null;
 	for (var b in bookList) {
 		row = bookList[b];
-		row.detach();
+		row.parentElement.removeChild(row);;
 		if (!prevRow) {
-			row.prependTo(document.querySelector("tbody#booksBody"));
+			row.prepend(document.querySelector("tbody#booksBody"));
 		} else {
-			row.insertAfter(prevRow);
+			row.after(prevRow);
 		}
 		prevRow = row;
 	}
@@ -91,8 +91,8 @@ function getOverdriveAvailability() {
 		var id = "SINGLEBOOK";
 
 		// inject the table we're going to populate
-		document.querySelector('.BookPageMetadataSection__description').insertAdjacentHTML("afterend", "<div id='AGtable'><table><tr>\
-	<td valign=top><b>Libby Availability:</b></td>\
+		document.querySelector('.BookPageMetadataSection__description').insertAdjacentHTML("afterend", "<div id='AGtable'><table>\
+	<tr><td valign=top><b>Libby Availability:</b></td></tr><tr>\
 	<td style='padding-left:10px;white-space:nowrap' valign=top class='AGAVAIL" + id + "'>" + libraryDivPlaceholders + "\
 	</td></tr></table></div>");
 		// send a message for the background page to make the request
@@ -110,8 +110,8 @@ function getOverdriveAvailability() {
 			var author = element.querySelector('[itemprop=author]').textContent;
 
 			// set a "Loading..." message for this listing
-			element.querySelector(".communityRating").parentElement.insertAdjacentHTML("afterend","<div id='AGtable'><table><tr>\
-	<td valign=top><b>Libby Availability:</b></td>\
+			element.querySelector(".communityRating").parentElement.insertAdjacentHTML("afterend","<div id='AGtable'><table>\
+	<tr><td valign=top><b>Libby Availability:</b></td></tr><tr>\
 	<td style='padding-left:10px' valign=top class='AGAVAIL" + id + "'>" + libraryDivPlaceholders + "\
 	</td></tr></table></div>");
 			// send a message for the background page to make the request
@@ -130,8 +130,8 @@ function getOverdriveAvailability() {
 			var author = element.querySelector('a.authorName').textContent;
 
 			// set a "Loading..." message for this listing
-			element.querySelector(".minirating").parentElement.insertAdjacentHTML("afterend","<div id='AGtable' class='AG2'><table><tr>\
-	<td valign=top><b>Libby Availability:</b></td>\
+			element.querySelector(".minirating").parentElement.insertAdjacentHTML("afterend","<div id='AGtable' class='AG2'><table>\
+	<tr><td valign=top><b>Libby Availability:</b></td></tr><tr>\
 	<td style='padding-left:10px' valign=top class='AGAVAIL" + id + "'>" + libraryDivPlaceholders + "\
 	</td></tr></table></div>");
 			// send a message for the background page to make the request
@@ -151,9 +151,9 @@ function getOverdriveAvailability() {
 			document.querySelector("#AGsort").addEventListener("click", function(e) {
 				var element = document.querySelector("#AGsort");
 				var arrow = document.querySelector("th img");
-				arrow.detach();
-				arrow.insertAfter(element);
-				if (element.hasClass('AGdesc')) {
+                arrow.parentElement.removeChild(arrow);
+				arrow.after(element);
+				if (element.classList.contains('AGdesc')) {
 					element.classList.remove('AGdesc');
 					element.classList.add('AGasc');
 					if (arrow.getAttribute("alt").indexOf("Up") >= 0) {
@@ -177,14 +177,14 @@ function getOverdriveAvailability() {
 		};
 
 		// iterate through every listing in the list that we haven't seen before
-		document.querySelectorAll("tr.bookalike:not(:has(td.AGseen))").forEach((element) => {
+		document.querySelectorAll("tr.bookalike:not(.AGseen)").forEach((element) => {
 			var id = element.getAttribute("id");
 
 			// set a "Loading..." message for this listing
 			var avg_col = element.querySelector("td.avg_rating");
 			avg_col.insertAdjacentHTML("afterend", '<td style="white-space:nowrap" class="field AGcol AGAVAIL' + id + '">' + libraryDivPlaceholders + '</td>');
 			// mark the row as seen
-			avg_col.classList.add("AGseen");
+			element.classList.add("AGseen");
 			// send a message for the background page to make the request
 			chrome.runtime.sendMessage({
 				type: "FROM_AG_PAGE",
@@ -203,7 +203,7 @@ function getOverdriveAvailability() {
 		//   or if a book's position is manually changed
 		if (tableUpdateCheckInterval == null) {
 			tableUpdateCheckInterval = setInterval(function() {
-				if (document.querySelectorAll("tr.bookalike:not(:has(td.AGseen))").length > 0) {
+				if (document.querySelectorAll("tr.bookalike:not(.AGseen)").length > 0) {
 					getOverdriveAvailability();
 				}
 				// sort rows by availability if necessary
@@ -219,25 +219,30 @@ function injectAvailableReads() {
 	if (!loaded) {
 		loaded = true;
 			// if document has been loaded, inject CSS styles
-			document.getElementsByTagName('body')[0].insertAdjacentHTML("beforebegin", "<style>\
-					#AGtable a{text-decoration:none}\
-					div img.AGaudio{margin-left:5px;margin-bottom:1px}\
-					span img.AGaudio{margin-left:-1px;margin-right:3px;margin-bottom:1px}\
-					.AGline{display:none;}\
-					font:hover hr.AGline{margin-left:5px;border:thin solid #c6c8c9;position:absolute;display:inline}\
-					.AGtitle{display:none;}\
-					font:hover span.AGtitle{z-index:999;background-color:white;position: absolute;margin-left:10px;margin-top:-1px;padding-left:5px;padding-right:5px;display:inline;border:thin solid #c6c8c9}\
-					.flip-vertical {-moz-transform: scaleY(-1);-webkit-transform: scaleY(-1);-o-transform: scaleY(-1);transform: scaleY(-1);-ms-filter: flipv; /*IE*/filter: flipv;}\
-					</style>");
+			document.getElementsByTagName('body')[0].insertAdjacentHTML("beforebegin", `<style>
+                #AGtable a{text-decoration:none}
+                div#AGtable {visibility:visible;display:block;}
+                div#AGtable > table {width:100%;}
+                div#AGtable td.AGAVAILbookDetails {visibility:visible;}
+                    td.AGcol > div::before {content:attr(class) ':';font-weight:bold;display:block;}
+                    div#AGtable table tr td {display:flex;flex-direction:column;}
+                    td.AGAVAILSINGLEBOOK > div{display:flex;flex-direction:row;}
+                    td.AGAVAILSINGLEBOOK > div::before{content: attr(class) ':';font-weight: bold;flex-basis: 6.5em;}
+					.AGline{display:none;}
+					font:hover hr.AGline{margin-left:5px;border:thin solid #c6c8c9;position:absolute;display:inline}
+					.AGtitle{display:none;}
+					font:hover span.AGtitle{z-index:999;background-color:white;position: absolute;margin-left:10px;margin-top:-1px;padding-left:5px;padding-right:5px;display:inline;border:thin solid #c6c8c9}
+					.flip-vertical {-moz-transform: scaleY(-1);-webkit-transform: scaleY(-1);-o-transform: scaleY(-1);transform: scaleY(-1);-ms-filter: flipv; /*IE*/filter: flipv;}
+					</style>`);
         // let's put the settings button in place
         if (document.querySelector("#buyButtonContainer")){
-            document.querySelector("#buyButtonContainer").insertAdjacentHTML("beforebegin", `<div id='AG2_settings'><a target='_blank' href='${chrome.runtime.getURL("src/options/index.html")}'><img id='AGimg' src='${chrome.runtime.getURL('icons/icon25.png')}' style='width:16px;height:16px' title='Available Goodreads 2 settings'></a></div>`);
+            document.querySelector("#buyButtonContainer").insertAdjacentHTML("beforebegin", `<div id='AG2_settings'><a target='_blank' href='${chrome.runtime.getURL("src/options/index.html")}'><img id='AGimg' src='${chrome.runtime.getURL('icons/icon25.png')}' style='width:16px;height:16px' title='Available Goodreads settings'></a></div>`);
         }
         if (document.querySelector("#bookLinks")){
-            document.querySelector("#bookLinks").insertAdjacentHTML("beforebegin", `<div id='AG2_settings'><a target='_blank' href='${chrome.runtime.getURL("src/options/index.html")}'><img id='AGimg' src='${chrome.runtime.getURL('icons/icon25.png')}' style='width:16px;height:16px' title='Available Goodreads 2 settings'></a></div>`);
+            document.querySelector("#bookLinks").insertAdjacentHTML("beforebegin", `<div id='AG2_settings'><a target='_blank' href='${chrome.runtime.getURL("src/options/index.html")}'><img id='AGimg' src='${chrome.runtime.getURL('icons/icon25.png')}' style='width:16px;height:16px' title='Available Goodreads settings'></a></div>`);
         }
         if (document.querySelector(".BookPageMetadataSection__description")){
-            document.querySelector(".BookPageMetadataSection__description").insertAdjacentHTML("afterend", `<div id='AG2_settings'><a target='_blank' href='${chrome.runtime.getURL("src/options/index.html")}'><img id='AGimg' src='${chrome.runtime.getURL('icons/icon25.png')}' style='width:16px;height:16px' title='Available Goodreads 2 settings'></a></div>`);
+            document.querySelector(".BookPageMetadataSection__description").insertAdjacentHTML("afterend", `<div id='AG2_settings'><a target='_blank' href='${chrome.runtime.getURL("src/options/index.html")}'><img id='AGimg' src='${chrome.runtime.getURL('icons/icon25.png')}' style='width:16px;height:16px' title='Available Goodreads settings'></a></div>`);
         }
 		chrome.storage.sync.get("showOnPages", function(obj) {
 			showOnPages = obj["showOnPages"];
@@ -309,7 +314,8 @@ chrome.runtime.onMessage.addListener(function(message, sender, sendResponse) {
 
 		// if an audiobook, add a headphone icon
 		if (book.isAudio) {
-			audioStr = "<img class=AGaudio src='" + chrome.runtime.getURL('icons/headphones.svg') + "' height=8px width=8px>";
+			// audioStr = "<img class=AGaudio src='" + chrome.runtime.getURL('icons/headphones.svg') + "' height=8px width=8px>";
+            audioStr = '\uD83C\uDFA7';
 			audioClass = "Audio";
 			newScore = 90;
 		} else {
