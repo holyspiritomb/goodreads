@@ -2,3 +2,4 @@ dist/
 *.zip
 *.xpi
 *.crx
+*.pem
