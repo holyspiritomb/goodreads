@@ -141,8 +141,8 @@ function parseOverdriveResults(data, requestInfo) {
           holds: book.isAvailable ? null : book.holdsCount,
           isAudio: book.type.id == "audiobook",
           alwaysAvailable: book.availabilityType == "always",
-          //url: "http://" + requestInfo.libraryShortName + ".overdrive.com/media/" + book.id,
-          url: "https://libbyapp.com/library/" + requestInfo.libraryShortName + "/similar-" + book.id + "/page-1/" + book.id,
+          url: "http://" + requestInfo.libraryShortName + ".overdrive.com/media/" + book.id,
+          // url: "https://libbyapp.com/library/" + requestInfo.libraryShortName + "/similar-" + book.id + "/page-1/" + book.id,
           library: requestInfo.libraryShortName
         });
       }
@@ -187,7 +187,7 @@ function parseOverdriveResults(data, requestInfo) {
             holds: holds,
             isAudio: isAudio,
             alwaysAvailable: alwaysAvailable,
-            url: odSearchToLibby(requestInfo.searchUrl),
+            url: requestInfo.searchUrl,
             library: requestInfo.libraryShortName
           });
         }
@@ -202,7 +202,7 @@ function parseOverdriveResults(data, requestInfo) {
     libraryShortName: requestInfo.libraryShortName,
     libraryStr: requestInfo.libraryStr,
     searchTerm: requestInfo.searchTerm,
-    url: odSearchToLibby(requestInfo.searchUrl),
+    url: requestInfo.searchUrl,
     books: books
   });
 }

@@ -37,8 +37,8 @@ function sortRowsByStatus() {
 
 	// sort books into lists by their current status
 	bookList.sort(function(a, b) {
-		x = parseFloat(a.getAttribute("AGsortScore"));
-		y = parseFloat(b.getAttribute("AGsortScore"));
+		let x = parseFloat(a.getAttribute("AGsortScore"));
+		let y = parseFloat(b.getAttribute("AGsortScore"));
 		if (x < y) {
 			return -1;
 		}
@@ -55,8 +55,8 @@ function sortRowsByStatus() {
 	// move the rows in sorted order
 	var prevRow = null;
 	for (var b in bookList) {
-		row = bookList[b];
-		row.parentElement.removeChild(row);;
+		let row = bookList[b];
+		row.parentElement.removeChild(row);
 		if (!prevRow) {
 			row.prepend(document.querySelector("tbody#booksBody"));
 		} else {
@@ -174,7 +174,7 @@ function getOverdriveAvailability() {
 				sortRowsByStatus();
 				return false;
 			});
-		};
+		}
 
 		// iterate through every listing in the list that we haven't seen before
 		document.querySelectorAll("tr.bookalike:not(.AGseen)").forEach((element) => {
@@ -195,7 +195,7 @@ function getOverdriveAvailability() {
 
 			libraryClassNames.forEach(function(className) {
 				element.classList.add(className);
-			})
+			});
 			waitingOnAvailability = true;
 		});
 
@@ -260,9 +260,9 @@ function injectAvailableReads() {
 						libraryDivPlaceholders += "<div class='" + libraryName;
 
 						if (libraries.length == 1) {
-							libraryDivPlaceholders += "'><font color=lightgray><small><i><span class=status>Loading...</i></span></small></font></div>"
+							libraryDivPlaceholders += "'><font color=lightgray><small><i><span class=status>Loading...</i></span></small></font></div>";
 						} else {
-							libraryDivPlaceholders += "'><font color=lightgray><small><i><span class=status>Loading " + libraryName + "...</i></span></small></font></div>"
+							libraryDivPlaceholders += "'><font color=lightgray><small><i><span class=status>Loading " + libraryName + "...</i></span></small></font></div>";
 						}
 
 						libraryClassNames.push("AGloading" + libraryName);
@@ -272,7 +272,7 @@ function injectAvailableReads() {
 			});
 		});
 	}
-};
+}
 
 // wait for the document to load before injecting code
 window.addEventListener("load", (event) => injectAvailableReads);
@@ -300,15 +300,15 @@ chrome.runtime.onMessage.addListener(function(message, sender, sendResponse) {
 		}
 
 		// continue if none were found
-		if (!book.totalCopies) { continue; }
+		if (!book.totalCopies) { continue }
 		// continue if we found and audio book and don't want that format
-		if (!showFormat['audioBook'] && book.isAudio) { continue; }
+		if (!showFormat['audioBook'] && book.isAudio) { continue }
 		// continue if we found an ebook and don't want that format
-		if (!showFormat['eBook'] && !book.isAudio) { continue; }
+		if (!showFormat['eBook'] && !book.isAudio) { continue }
 		// if option for showing book title and author is set, create the string
 		if (showFormat['optionalBookTitle']) { 
 			optionalBookTitle = "<font color=gray> - <i>" + book.title + "</i> by " + book.author + "</font>";
-		 }
+		}
 
 		onlyRecommendations = false;
 
@@ -359,7 +359,7 @@ chrome.runtime.onMessage.addListener(function(message, sender, sendResponse) {
 	}
 	if (onlyRecommendations && message.books && message.books.length > 0) {
 		sortScore = 9998;
-		listingStr = "<font color=#C60>request<hr width=10px class=AGline><span class='AGtitle'>Recommend " + message.libraryShortName + " add this to their collection</span></font>"
+		listingStr = "<font color=#C60>request<hr width=10px class=AGline><span class='AGtitle'>Recommend " + message.libraryShortName + " add this to their collection</span></font>";
 	}
 
 	// only show one not found result if the option is set
@@ -380,8 +380,8 @@ chrome.runtime.onMessage.addListener(function(message, sender, sendResponse) {
 	// inject listing into a cell's div based on review id and library
 	document.querySelector("td.AGAVAIL" + message.id + " div." + message.libraryShortName).innerHTML = '<a target="_blank" href="' + message.url + '">' + listingStr + '</a>';
 
-	row = document.querySelector("tr#" + message.id);
-	oldScore = row.getAttribute("AGsortScore");
+	let row = document.querySelector("tr#" + message.id);
+	let oldScore = row.getAttribute("AGsortScore");
 	if (!oldScore || sortScore < oldScore) {
 		row.setAttribute("AGsortScore", sortScore);
 	}
