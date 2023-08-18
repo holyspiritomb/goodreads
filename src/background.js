@@ -49,13 +49,6 @@ async function lookupOverdriveURL(libraryLink, libraryName, elementID, tabId) {
   });
 }
 
-function odSearchToLibby(a) {
-    let url = a;
-    let libbyUrl = url.replace("http:", "https:").replace("://", "://libbyapp.com/search/").replace(".overdrive.com/search/title?query=", "/search/query-").replace("&creator=", "%20");
-    libbyUrl = libbyUrl + "/page-1";
-    return libbyUrl;
-}
-
 function searchOverdrive(requestInfo) {
   // load strings for different libraries
   chrome.storage.sync.get("libraries", async function(obj) {

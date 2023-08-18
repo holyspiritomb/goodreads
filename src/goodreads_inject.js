@@ -279,6 +279,15 @@ window.addEventListener("load", (event) => injectAvailableReads);
 // if in Firefox we missed the load event, add after a delay
 setTimeout(injectAvailableReads, 3000);
 
+function odSearchToLibby(a) {
+	console.log(a);
+	let url = a;
+	let libbyUrl = url.replace("http:", "https:").replace("://", "://libbyapp.com/search/").replace(".overdrive.com/search/title?query=", "/search/query-").replace("&creator=", "%20");
+	libbyUrl = libbyUrl + "/page-1";
+	console.log(libbyUrl);
+	return libbyUrl;
+}
+
 // listen for search results from background page
 chrome.runtime.onMessage.addListener(function(message, sender, sendResponse) {
 	var listingStr = "<font class='AGnone AGresult' color=gray>not found<hr width=10px class=AGline><span class='AGtitle'>searched " + message.libraryShortName + " for: <i>" + message.searchTerm + "</i></span></font>";
@@ -378,7 +387,9 @@ chrome.runtime.onMessage.addListener(function(message, sender, sendResponse) {
 	}
 
 	// inject listing into a cell's div based on review id and library
-	document.querySelector("td.AGAVAIL" + message.id + " div." + message.libraryShortName).innerHTML = '<a target="_blank" href="' + message.url + '">' + listingStr + '</a>';
+	let libbyMessageUrl = odSearchToLibby(message.url);
+	console.log(message);
+	document.querySelector("td.AGAVAIL" + message.id + " div." + message.libraryShortName).innerHTML = '<a target="_blank" href="' + libbyMessageUrl + '">' + listingStr + '</a>';
 
 	let row = document.querySelector("tr#" + message.id);
 	let oldScore = row.getAttribute("AGsortScore");
