@@ -71,7 +71,7 @@ function loadLibraries() {
 function validateInput() {
 	var invalid = false;
 	// validate the url
-	var library = $("#urlText").val()
+	var library = $("#urlText").val();
 	if (library.length > 0) {
 		library = library.replace(/^https?:\/\//, '').replace(/overdrive.com.*/, 'overdrive.com').replace(/libraryreserve.com.*/, 'libraryreserve.com');
 		var newDesign = !$("#newDesign").prop("checked");
@@ -226,8 +226,8 @@ function validateInput() {
 		var libraryName = $("#nameText").val().replace(/[^ -~]+/g, "");
 		chrome.storage.sync.get("libraries", function(obj) {
 			var libraries = obj["libraries"];
-			libraryUrl = $("#urlText").val().replace(/^https?:\/\//, '').replace(/overdrive.com.*/, 'overdrive.com').replace(/libraryreserve.com.*/, 'libraryreserve.com');
-			newDesign = !$("#newDesign").prop("checked");
+			let libraryUrl = $("#urlText").val().replace(/^https?:\/\//, '').replace(/overdrive.com.*/, 'overdrive.com').replace(/libraryreserve.com.*/, 'libraryreserve.com');
+			let newDesign = !$("#newDesign").prop("checked");
 			libraries[libraryName] = {
 				url: libraryUrl,
 				newDesign: newDesign
