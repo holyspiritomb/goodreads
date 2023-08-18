@@ -60,6 +60,10 @@
   "browser_specific_settings": {
     "gecko": {
       "id": "availablereads@holyspiritomb"
+    },
+    "gecko_android": {
+      "id": "availablereads@holyspiritomb",
+      "strict_min_version": "116.0"
     }
   }
 }
