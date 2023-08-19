@@ -91,10 +91,7 @@ function getOverdriveAvailability() {
 		var id = "SINGLEBOOK";
 
 		// inject the table we're going to populate
-		document.querySelector('.BookPageMetadataSection__description').insertAdjacentHTML("afterend", "<div id='AGtable'><table>\
-	<tr><td valign=top><b>Libby Availability:</b></td></tr><tr>\
-	<td style='padding-left:10px;white-space:nowrap' valign=top class='AGAVAIL" + id + "'>" + libraryDivPlaceholders + "\
-	</td></tr></table></div>");
+		document.querySelector('.BookPageMetadataSection__description').insertAdjacentHTML("afterend", "<div id='AGtable'><table><tr><td valign=top><b>Libby Availability:</b></td></tr><tr><td style='padding-left:10px;white-space:nowrap' valign=top class='AGAVAIL" + id + "'>" + libraryDivPlaceholders + "</td></tr></table></div>");
 		// send a message for the background page to make the request
 		chrome.runtime.sendMessage({
 			type: "FROM_AG_PAGE",
@@ -110,10 +107,7 @@ function getOverdriveAvailability() {
 			var author = element.querySelector('[itemprop=author]').textContent;
 
 			// set a "Loading..." message for this listing
-			element.querySelector(".communityRating").parentElement.insertAdjacentHTML("afterend","<div id='AGtable'><table>\
-	<tr><td valign=top><b>Libby Availability:</b></td></tr><tr>\
-	<td style='padding-left:10px' valign=top class='AGAVAIL" + id + "'>" + libraryDivPlaceholders + "\
-	</td></tr></table></div>");
+			element.querySelector(".communityRating").parentElement.insertAdjacentHTML("afterend","<div id='AGtable'><table><tr><td valign=top><b>Libby Availability:</b></td></tr><tr><td style='padding-left:10px' valign=top class='AGAVAIL" + id + "'>" + libraryDivPlaceholders + "</td></tr></table></div>");
 			// send a message for the background page to make the request
 			chrome.runtime.sendMessage({
 				type: "FROM_AG_PAGE",
@@ -130,10 +124,7 @@ function getOverdriveAvailability() {
 			var author = element.querySelector('a.authorName').textContent;
 
 			// set a "Loading..." message for this listing
-			element.querySelector(".minirating").parentElement.insertAdjacentHTML("afterend","<div id='AGtable' class='AG2'><table>\
-	<tr><td valign=top><b>Libby Availability:</b></td></tr><tr>\
-	<td style='padding-left:10px' valign=top class='AGAVAIL" + id + "'>" + libraryDivPlaceholders + "\
-	</td></tr></table></div>");
+			element.querySelector(".minirating").parentElement.insertAdjacentHTML("afterend","<div id='AGtable' class='AG2'><table><tr><td valign=top><b>Libby Availability:</b></td></tr><tr><td style='padding-left:10px' valign=top class='AGAVAIL" + id + "'>" + libraryDivPlaceholders + "</td></tr></table></div>");
 			// send a message for the background page to make the request
 			chrome.runtime.sendMessage({
 				type: "FROM_AG_PAGE",
@@ -281,8 +272,7 @@ setTimeout(injectAvailableReads, 3000);
 
 function odSearchToLibby(a) {
 	console.log(a);
-	let url = a;
-	let libbyUrl = url.replace("http:", "https:").replace("://", "://libbyapp.com/search/").replace(".overdrive.com/search/title?query=", "/search/query-").replace("&creator=", "%20");
+	let libbyUrl = a.replace("http:", "https:").replace("://", "://libbyapp.com/search/").replace(".overdrive.com/search/title?query=", "/search/query-").replace("&creator=", "%20");
 	libbyUrl = libbyUrl + "/page-1";
 	console.log(libbyUrl);
 	return libbyUrl;
@@ -323,7 +313,6 @@ chrome.runtime.onMessage.addListener(function(message, sender, sendResponse) {
 
 		// if an audiobook, add a headphone icon
 		if (book.isAudio) {
-			// audioStr = "<img class=AGaudio src='" + chrome.runtime.getURL('icons/headphones.svg') + "' height=8px width=8px>";
             audioStr = '\uD83C\uDFA7';
 			audioClass = "Audio";
 			newScore = 90;
@@ -388,7 +377,6 @@ chrome.runtime.onMessage.addListener(function(message, sender, sendResponse) {
 
 	// inject listing into a cell's div based on review id and library
 	let libbyMessageUrl = odSearchToLibby(message.url);
-	console.log(message);
 	document.querySelector("td.AGAVAIL" + message.id + " div." + message.libraryShortName).innerHTML = '<a target="_blank" href="' + libbyMessageUrl + '">' + listingStr + '</a>';
 
 	let row = document.querySelector("tr#" + message.id);

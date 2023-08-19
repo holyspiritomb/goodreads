@@ -260,7 +260,7 @@ function validateInput() {
 		});
 	});
 
-    /* $("#exportButton").click(function () {
+    $("#exportButton").click(function () {
         console.log("export clicked");
         chrome.storage.sync.get("libraries", function (obj) {
             console.log(obj);
@@ -278,7 +278,7 @@ function validateInput() {
         console.log(implibraries);
         chrome.storage.sync.set({
             libraries: implibraries
+        }, function () {
+            console.log("imported");
         });
-    }); */
-
-//document.addEventListener('DOMContentLoaded', importExport);
+    });

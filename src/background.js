@@ -135,7 +135,6 @@ function parseOverdriveResults(data, requestInfo) {
           isAudio: book.type.id == "audiobook",
           alwaysAvailable: book.availabilityType == "always",
           url: "http://" + requestInfo.libraryShortName + ".overdrive.com/media/" + book.id,
-          // url: "https://libbyapp.com/library/" + requestInfo.libraryShortName + "/similar-" + book.id + "/page-1/" + book.id,
           library: requestInfo.libraryShortName
         });
       }
