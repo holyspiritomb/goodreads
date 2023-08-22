@@ -3,3 +3,4 @@ dist/
 *.xpi
 *.crx
 *.pem
+web-ext-artifacts/
