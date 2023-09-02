@@ -5,8 +5,19 @@ var tableUpdateCheckInterval = null;
 var showOnPages = {};
 var showFormat = {};
 var libraryClassNames = [];
+var debugMode = {};
+var debugging = false;
 var waitingOnAvailability = false;
 var loaded = false;
+
+
+function debugConsole(stuff) {
+    if (debugging){
+        console.debug(stuff);
+    } else {
+        return;
+    }
+}
 
 function sortRowsByStatus() {
 	var sortAsc = true;
@@ -207,6 +218,13 @@ function getOverdriveAvailability() {
 }
 
 function injectAvailableReads() {
+    chrome.storage.sync.get("debugMode", function(obj){
+        debugMode = obj["debugMode"];
+        debugging = debugMode["debug"];
+    });
+    if (debugging) {
+        console.debug("Available Goodreads Forked is in debug mode.")
+    }
 	if (!loaded) {
 		loaded = true;
 			// if document has been loaded, inject CSS styles
@@ -215,16 +233,18 @@ function injectAvailableReads() {
                 div#AGtable {visibility:visible;display:block;}
                 div#AGtable > table {width:100%;}
                 div#AGtable td.AGAVAILbookDetails {visibility:visible;}
-                    td.AGcol > div::before {content:attr(class) ':';font-weight:bold;display:block;}
-                    div#AGtable table tr td {display:flex;flex-direction:column;}
-                    td.AGAVAILSINGLEBOOK > div{display:flex;flex-direction:row;}
-                    td.AGAVAILSINGLEBOOK > div::before{content: attr(class) ':';font-weight: bold;flex-basis: 6.5em;}
-					.AGline{display:none;}
-					font:hover hr.AGline{margin-left:5px;border:thin solid #c6c8c9;position:absolute;display:inline}
-					.AGtitle{display:none;}
-					font:hover span.AGtitle{z-index:999;background-color:white;position: absolute;margin-left:10px;margin-top:-1px;padding-left:5px;padding-right:5px;display:inline;border:thin solid #c6c8c9}
-					.flip-vertical {-moz-transform: scaleY(-1);-webkit-transform: scaleY(-1);-o-transform: scaleY(-1);transform: scaleY(-1);-ms-filter: flipv; /*IE*/filter: flipv;}
-					</style>`);
+                div#AGtable table tr td {display:flex;flex-direction:column;}
+                div#AGtable table tr td > div::before{content: attr(class) ':';font-weight: bold;display:block;}
+                td.AGcol > div::before {content:attr(class) ':';font-weight:bold;display:block;}
+                td.AGAVAILSINGLEBOOK > div{display:flex;flex-direction:row;}
+                td.AGAVAILSINGLEBOOK > div::before{content: attr(class) ':';font-weight: bold;flex-basis: 6.5em;}
+				.AGline{display:none;}
+				font:hover hr.AGline{margin-left:5px;border:thin solid #c6c8c9;position:absolute;display:inline}
+				.AGtitle{display:none;}
+				font:hover span.AGtitle{z-index:999;background-color:white;position: absolute;margin-left:10px;margin-top:-1px;padding-left:5px;padding-right:5px;display:inline;border:thin solid #c6c8c9}
+				.flip-vertical {-moz-transform: scaleY(-1);-webkit-transform: scaleY(-1);-o-transform: scaleY(-1);transform: scaleY(-1);-ms-filter: flipv; /*IE*/filter: flipv;}
+                #AG2_settings a{text-decoration:none;}
+				</style>`);
         // let's put the settings button in place
         if (document.querySelector("#buyButtonContainer")){
             document.querySelector("#buyButtonContainer").insertAdjacentHTML("beforebegin", `<div id='AG2_settings'><a target='_blank' href='${chrome.runtime.getURL("src/options/index.html")}'><img id='AGimg' src='${chrome.runtime.getURL('icons/icon25.png')}' style='width:16px;height:16px' title='Available Goodreads settings'></a></div>`);
@@ -234,6 +254,9 @@ function injectAvailableReads() {
         }
         if (document.querySelector(".BookPageMetadataSection__description")){
             document.querySelector(".BookPageMetadataSection__description").insertAdjacentHTML("afterend", `<div id='AG2_settings'><a target='_blank' href='${chrome.runtime.getURL("src/options/index.html")}'><img id='AGimg' src='${chrome.runtime.getURL('icons/icon25.png')}' style='width:16px;height:16px' title='Available Goodreads settings'></a></div>`);
+        }
+        if (document.querySelector("form#perPageForm")){
+            document.querySelector("form#perPageForm").insertAdjacentHTML("beforebegin", `<div id='AG2_settings'><a target='_blank' href='${chrome.runtime.getURL("src/options/index.html")}'><img id='AGimg' src='${chrome.runtime.getURL('icons/icon25.png')}' style='width:16px;height:16px' title='Available Goodreads settings'> Available Goodreads settings</a></div>`);
         }
 		chrome.storage.sync.get("showOnPages", function(obj) {
 			showOnPages = obj["showOnPages"];
@@ -271,10 +294,10 @@ window.addEventListener("load", (event) => injectAvailableReads);
 setTimeout(injectAvailableReads, 3000);
 
 function odSearchToLibby(a) {
-	console.log(a);
-	let libbyUrl = a.replace("http:", "https:").replace("://", "://libbyapp.com/search/").replace(".overdrive.com/search/title?query=", "/search/query-").replace("&creator=", "%20");
+	debugConsole(a);
+	let libbyUrl = a.replace("://thunder.api.overdrive.com/v2/libraries/", "://libbyapp.com/search/").replace("/media?query=", "/search/query-").replace("&creator=", "%20");
 	libbyUrl = libbyUrl + "/page-1";
-	console.log(libbyUrl);
+    debugConsole(libbyUrl);
 	return libbyUrl;
 }
 
@@ -286,6 +309,7 @@ chrome.runtime.onMessage.addListener(function(message, sender, sendResponse) {
 
 	for (var bookIndex in message.books) {
 		var book = message.books[bookIndex];
+        debugConsole(book);
 		var audioStr = "";
 		var audioClass = "";
 		var newScore = 0;
@@ -313,7 +337,7 @@ chrome.runtime.onMessage.addListener(function(message, sender, sendResponse) {
 
 		// if an audiobook, add a headphone icon
 		if (book.isAudio) {
-            audioStr = '\uD83C\uDFA7';
+            audioStr = ' \uD83C\uDFA7';
 			audioClass = "Audio";
 			newScore = 90;
 		} else {

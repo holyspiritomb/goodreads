@@ -169,6 +169,31 @@ function validateInput() {
 		});
 	});
 
+	chrome.storage.sync.get("debugMode", function(obj) {
+		var debugMode = obj["debugMode"];
+		if (!debugMode) {
+			debugMode = {debug: false};
+			chrome.storage.sync.set({
+				debugMode: debugMode
+			}, null);
+		}
+		$("input.debugMode").each(function(index, value) {
+			if (debugMode[$(this).val()]) {
+				$(this).prop('checked', true);
+                $(".debug").show()
+			} else {
+				$(this).prop('checked', false);
+                $(".debug").hide();
+			}
+		});
+        if (changed) {
+            if ($("input.debugMode:checked")){
+                $(".debug").show()
+            } else {
+                $(".debug").hide();
+            }
+        }
+	});
 	// refresh the settings every second for an update,
 	//   this is done since the primary way of adding libraries is through another tab
 	if (!libraryCheckInterval) {
@@ -219,6 +244,19 @@ function validateInput() {
 			showFormat: showFormat
 		}, function() {
 			$("input.showFormat").prop('disabled', false);
+		});
+	});
+	// when the debug settings are changed
+	$("input.debugMode").change(function() {
+		var debugMode = {};
+		$("input.debugMode").each(function(index, value) {
+			debugMode[$(this).val()] = $(this).is(':checked');
+		});
+		$("input.debugMode").prop('disabled', true);
+		chrome.storage.sync.set({
+			debugMode: debugMode
+		}, function() {
+			$("input.debugMode").prop('disabled', false);
 		});
 	});
 
@@ -272,12 +310,13 @@ function validateInput() {
     $("#importButton").click(function () {
         $("#importButton").prop('disabled',true);
         console.log("import clicked");
-        let importedlibraries = $("#exportBox").value;
+        var importedlibraries = $("#exportBox").value;
         console.log(importedlibraries);
-        let implibraries = JSON.parse(importedlibraries);
+        var libraries = {}
+        libraries = JSON.parse(importedlibraries);
         console.log(implibraries);
         chrome.storage.sync.set({
-            libraries: implibraries
+            libraries: libraries
         }, function () {
             console.log("imported");
         });

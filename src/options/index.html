@@ -33,6 +33,8 @@ img#mainicon {   position: relative;
 }
 div#container
 {
+  margin-left:auto;
+  margin-right:auto;
   border: thin solid;
   width:600px;
   padding: 30px;
@@ -67,7 +69,6 @@ label {
 </style>
 </head>
 <body bgcolor='#d3d3b3'>
-	<center>
 		<div id="container">
 			<img id="mainicon" src="icon.png"><font face='Georgia, "Times New Roman", serif' size=20>Available Goodreads Forked</font>
 			<br/><br/>
@@ -120,7 +121,7 @@ label {
             Add a library:<br/>
             <label id="nameLabel" for="nameText">Library Name: </label>
             <label id="urlLabel" for="urlText">OverDrive URL: </label>
-            <button id="exportButton">Export Libraries</button>
+            <button id="exportButton" class="debug">Export Libraries</button>
           </td>
           <td>
            <br/>
@@ -143,14 +144,14 @@ label {
       <tr>
           <td colspan="3">
 
-            <textarea id="exportBox" name="exportBox" style="width:100%;height:100px;margin-left:auto;margin-right:auto;"></textarea>
-            <button id="importButton">Import Libraries</button>
+            <textarea id="exportBox" class="debug" name="exportBox" style="width:100%;height:100px;margin-left:auto;margin-right:auto;"></textarea>
+            <button id="importButton" class="debug">Import Libraries</button>
           </td>
       </tr>
     </table>
     <div class="description">
      <div class="subheading">Detailed information:</div>
-     This extension will add an "<b>Availability on OverDrive</b>" listing to each GoodReads <a target=_blank href=https://www.goodreads.com/book/show/18114322-the-grapes-of-wrath>book description page</a> and an "<b><font family='Georgia, "Times New Roman", serif' color=#382110>on overdrive</font></b>" column to <a target=_blank href=https://www.goodreads.com/review/list>each bookshelf</a>. A legend of terms and symbols used:<br/><center>
+     This extension will add an "<b>Availability on OverDrive</b>" listing to each GoodReads <a target=_blank href=https://www.goodreads.com/book/show/18114322-the-grapes-of-wrath>book description page</a> and an "<b><font family='Georgia, "Times New Roman", serif' color=#382110>on overdrive</font></b>" column to <a target=_blank href=https://www.goodreads.com/review/list>each bookshelf</a>. A legend of terms and symbols used:<br/>
      <table class="desctable">
       <tr><td><font color=#080>3 available</font></td><td>3 copies are available</td></tr>
       <tr><td><font color=#C80>4/2 holds</font></td><td>4 people waiting for 2 copies of the book</td></tr>
@@ -159,13 +160,12 @@ label {
       <tr><td><font color=gray>not found</font></td><td>No results found searching by book title and author</td></tr>
       <tr><td><img height=8px width=8px src=../../icons/headphones.svg></td><td>Audiobook</td>
       </tr>
-    </table></center>
+    </table>
     Hover over each listing to see the title and author of the result. Click the listing to open the OverDrive search result page in a new window. Clicking the "<b><font family='Georgia, "Times New Roman", serif' color=#382110>libby</font></b>" column will sort the listings currently displayed by availability. First by available books, then available audiobooks, then holds divided by copies available.
     <BR/><BR/>
     <div class="subheading">Finding your library's OverDrive URL:</div>
     Your library URL must contain <font face='courier'>.overdrive.com</font>. This is usually found by going to your library's digital collection or ebook site and looking at the URL location. <br/><br/>
     Sometimes major libraries will hide this URL, but you can usually figure it out by simply looking at the domain name or city name. For example:
-    <center>
       <table class="desctable">
         <tr><th>City</th><th>Library ebook site</th><th>Actual OverDrive URL</th></tr>
         <tr><td>New York</td><td>http://ebooks.<b>nypl</b>.org</td><td><b>nypl</b>.lib.overdrive.com</td></tr>
@@ -173,7 +173,6 @@ label {
         <tr><td class=title><b>Santa Monica</b></td><td>http://ebook.smpl.org</td><td><b>santamonica</b>.overdrive.com</td></tr>
         <tr><td class=title><b>Halifax</b></td><td class=padright>digitalmedia.halifaxpubliclibraries.ca</td><td><b>halifax</b>.lib.overdrive.com</td></tr>
       </table>
-    </center>
     <br/>
     A slightly more advanced way is to do a DNS lookup.
     <ol><li>Go to a DNS lookup tool like: <a target=_blank href=https://www.dnswatch.info/>https://www.dnswatch.info/</a></li>
@@ -187,8 +186,10 @@ label {
       <li>Press Ctrl+F and search for: overdrive.com</li>
       <li>Copy the URL found into the text box above.</li>
     </ol>
+    <div>
+      <label><input class="check debugMode" type="checkbox" name="debugMode" value="debug">Debug mode</label><br/>
+    </div>
   </div>
-</center>
 
 <script src="./jquery-3.7.0.min.js"></script>
 <script src="./settings.js"></script>

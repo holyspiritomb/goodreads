@@ -66,17 +66,21 @@ function searchOverdrive(requestInfo) {
 
       // create the search url
       var searchUrl = "";
-      var searchTerm = requestInfo.title + " " + requestInfo.author;
+      var searchTerm = encodeURIComponent(requestInfo.title) + "&creator=" + encodeURIComponent(requestInfo.author);
       if (library.newDesign) {
-         searchUrl = "http://" + library.url + "/search/title?query=" +
-          encodeURIComponent(requestInfo.title) + "&creator=" +
-          encodeURIComponent(requestInfo.author);
+          searchUrl = `https://thunder.api.overdrive.com/v2/libraries/${libraryShortName}/media?query=${searchTerm}`;
+         // searchUrl = "http://" + library.url + "/search/title?query=" +
+          // encodeURIComponent(requestInfo.title) + "&creator=" +
+          // encodeURIComponent(requestInfo.author);
       } else {
+         searchTerm = requestInfo.title + " " + requestInfo.author;
          searchUrl = "http://" + library.url + "/BANGSearch.dll?Type=FullText&FullTextField=All&more=1&FullTextCriteria=" + encodeURIComponent(searchTerm);
       }
-      console.log(searchUrl);
+      console.debug(searchUrl);
       const response = await fetch(searchUrl);
-      const data = await response.text();
+      // const data = await response.text();
+      const initdata = await response.json();
+      const data = initdata.items;
       parseOverdriveResults(data, {
           title: requestInfo.title,
           author: requestInfo.author,
@@ -122,10 +126,25 @@ function parseOverdriveResults(data, requestInfo) {
 
   // if new design
   if (requestInfo.newDesign) {
-    var match = /\.mediaItems ?=(.*?});/.exec(data);
-    if (match) {
-      var bookList = JSON.parse(match[1].trim());
-      for (var key in bookList) {
+    // var match = /\.mediaItems ?=(.*?});/.exec(data);
+    // if (match) {
+      // var bookList = JSON.parse(match[1].trim());
+      // for (var key in bookList) {
+        // var book = bookList[key];
+        // books.push({
+          // title: book.title,
+          // author: book.firstCreatorName,
+          // totalCopies: book.isAvailable ? book.availableCopies : book.ownedCopies,
+          // holds: book.isAvailable ? null : book.holdsCount,
+          // isAudio: book.type.id == "audiobook",
+          // alwaysAvailable: book.availabilityType == "always",
+          // url: "http://" + requestInfo.libraryShortName + ".overdrive.com/media/" + book.id,
+          // library: requestInfo.libraryShortName
+        // });
+      // }
+    // }
+    var bookList = data;
+    for (var key in bookList) {
         var book = bookList[key];
         books.push({
           title: book.title,
@@ -137,8 +156,8 @@ function parseOverdriveResults(data, requestInfo) {
           url: "http://" + requestInfo.libraryShortName + ".overdrive.com/media/" + book.id,
           library: requestInfo.libraryShortName
         });
-      }
     }
+    console.debug(books);
   } else {
     // if no results found
     if (data.indexOf("No results were found for your search.") < 0) {
