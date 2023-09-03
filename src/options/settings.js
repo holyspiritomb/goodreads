@@ -180,19 +180,12 @@ function validateInput() {
 		$("input.debugMode").each(function(index, value) {
 			if (debugMode[$(this).val()]) {
 				$(this).prop('checked', true);
-                $(".debug").show()
+                $(".debug").show();
 			} else {
 				$(this).prop('checked', false);
                 $(".debug").hide();
 			}
 		});
-        if (changed) {
-            if ($("input.debugMode:checked")){
-                $(".debug").show()
-            } else {
-                $(".debug").hide();
-            }
-        }
 	});
 	// refresh the settings every second for an update,
 	//   this is done since the primary way of adding libraries is through another tab
@@ -264,8 +257,8 @@ function validateInput() {
 		var libraryName = $("#nameText").val().replace(/[^ -~]+/g, "");
 		chrome.storage.sync.get("libraries", function(obj) {
 			var libraries = obj["libraries"];
-			let libraryUrl = $("#urlText").val().replace(/^https?:\/\//, '').replace(/overdrive.com.*/, 'overdrive.com').replace(/libraryreserve.com.*/, 'libraryreserve.com');
-			let newDesign = !$("#newDesign").prop("checked");
+			libraryUrl = $("#urlText").val().replace(/^https?:\/\//, '').replace(/overdrive.com.*/, 'overdrive.com').replace(/libraryreserve.com.*/, 'libraryreserve.com');
+			newDesign = !$("#newDesign").prop("checked");
 			libraries[libraryName] = {
 				url: libraryUrl,
 				newDesign: newDesign
@@ -312,9 +305,9 @@ function validateInput() {
         console.log("import clicked");
         var importedlibraries = $("#exportBox").value;
         console.log(importedlibraries);
-        var libraries = {}
+        var libraries = {};
         libraries = JSON.parse(importedlibraries);
-        console.log(implibraries);
+		console.log(importedlibraries);
         chrome.storage.sync.set({
             libraries: libraries
         }, function () {

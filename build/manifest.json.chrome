@@ -1,7 +1,7 @@
 {
   "name": "Available Reads Forked",
   "short_name": "AvailableReadsFork",
-  "version": "2.0.4",
+  "version": "2.0.5",
   "manifest_version": 3,
   "description": "Displays availability of Libby ebooks and audiobooks from your local library on GoodReads pages.",
   "homepage_url": "http://github.com/holyspiritomb/goodreads",
@@ -41,7 +41,6 @@
   "web_accessible_resources": [
     {
       "resources": [
-        "icons/headphones.svg",
         "icons/throbber.gif",
         "icons/icon25.png",
         "icons/icon25-hover.png",

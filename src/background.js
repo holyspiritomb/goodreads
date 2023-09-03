@@ -69,16 +69,12 @@ function searchOverdrive(requestInfo) {
       var searchTerm = encodeURIComponent(requestInfo.title) + "&creator=" + encodeURIComponent(requestInfo.author);
       if (library.newDesign) {
           searchUrl = `https://thunder.api.overdrive.com/v2/libraries/${libraryShortName}/media?query=${searchTerm}`;
-         // searchUrl = "http://" + library.url + "/search/title?query=" +
-          // encodeURIComponent(requestInfo.title) + "&creator=" +
-          // encodeURIComponent(requestInfo.author);
       } else {
          searchTerm = requestInfo.title + " " + requestInfo.author;
          searchUrl = "http://" + library.url + "/BANGSearch.dll?Type=FullText&FullTextField=All&more=1&FullTextCriteria=" + encodeURIComponent(searchTerm);
       }
       console.debug(searchUrl);
       const response = await fetch(searchUrl);
-      // const data = await response.text();
       const initdata = await response.json();
       const data = initdata.items;
       parseOverdriveResults(data, {
@@ -126,26 +122,10 @@ function parseOverdriveResults(data, requestInfo) {
 
   // if new design
   if (requestInfo.newDesign) {
-    // var match = /\.mediaItems ?=(.*?});/.exec(data);
-    // if (match) {
-      // var bookList = JSON.parse(match[1].trim());
-      // for (var key in bookList) {
-        // var book = bookList[key];
-        // books.push({
-          // title: book.title,
-          // author: book.firstCreatorName,
-          // totalCopies: book.isAvailable ? book.availableCopies : book.ownedCopies,
-          // holds: book.isAvailable ? null : book.holdsCount,
-          // isAudio: book.type.id == "audiobook",
-          // alwaysAvailable: book.availabilityType == "always",
-          // url: "http://" + requestInfo.libraryShortName + ".overdrive.com/media/" + book.id,
-          // library: requestInfo.libraryShortName
-        // });
-      // }
-    // }
     var bookList = data;
     for (var key in bookList) {
         var book = bookList[key];
+        console.debug(book);
         books.push({
           title: book.title,
           author: book.firstCreatorName,

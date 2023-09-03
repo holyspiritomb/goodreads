@@ -48,8 +48,8 @@ function sortRowsByStatus() {
 
 	// sort books into lists by their current status
 	bookList.sort(function(a, b) {
-		let x = parseFloat(a.getAttribute("AGsortScore"));
-		let y = parseFloat(b.getAttribute("AGsortScore"));
+		x = parseFloat(a.getAttribute("AGsortScore"));
+		y = parseFloat(b.getAttribute("AGsortScore"));
 		if (x < y) {
 			return -1;
 		}
@@ -153,7 +153,7 @@ function getOverdriveAvailability() {
 			document.querySelector("#AGsort").addEventListener("click", function(e) {
 				var element = document.querySelector("#AGsort");
 				var arrow = document.querySelector("th img");
-                arrow.parentElement.removeChild(arrow);
+				arrow.parentElement.removeChild(arrow);
 				arrow.after(element);
 				if (element.classList.contains('AGdesc')) {
 					element.classList.remove('AGdesc');
@@ -218,13 +218,6 @@ function getOverdriveAvailability() {
 }
 
 function injectAvailableReads() {
-    chrome.storage.sync.get("debugMode", function(obj){
-        debugMode = obj["debugMode"];
-        debugging = debugMode["debug"];
-    });
-    if (debugging) {
-        console.debug("Available Goodreads Forked is in debug mode.")
-    }
 	if (!loaded) {
 		loaded = true;
 			// if document has been loaded, inject CSS styles
@@ -258,6 +251,10 @@ function injectAvailableReads() {
         if (document.querySelector("form#perPageForm")){
             document.querySelector("form#perPageForm").insertAdjacentHTML("beforebegin", `<div id='AG2_settings'><a target='_blank' href='${chrome.runtime.getURL("src/options/index.html")}'><img id='AGimg' src='${chrome.runtime.getURL('icons/icon25.png')}' style='width:16px;height:16px' title='Available Goodreads settings'> Available Goodreads settings</a></div>`);
         }
+		chrome.storage.sync.get("debugMode", function(obj){
+			debugMode = obj["debugMode"];
+			debugging = debugMode["debug"];
+		});
 		chrome.storage.sync.get("showOnPages", function(obj) {
 			showOnPages = obj["showOnPages"];
 			chrome.storage.sync.get("showFormat",function(obj) {
@@ -403,8 +400,8 @@ chrome.runtime.onMessage.addListener(function(message, sender, sendResponse) {
 	let libbyMessageUrl = odSearchToLibby(message.url);
 	document.querySelector("td.AGAVAIL" + message.id + " div." + message.libraryShortName).innerHTML = '<a target="_blank" href="' + libbyMessageUrl + '">' + listingStr + '</a>';
 
-	let row = document.querySelector("tr#" + message.id);
-	let oldScore = row.getAttribute("AGsortScore");
+	row = document.querySelector("tr#" + message.id);
+	oldScore = row.getAttribute("AGsortScore");
 	if (!oldScore || sortScore < oldScore) {
 		row.setAttribute("AGsortScore", sortScore);
 	}
