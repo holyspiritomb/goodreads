@@ -68,7 +68,7 @@ function searchOverdrive(requestInfo) {
       var searchUrl = "";
       var searchTerm = encodeURIComponent(requestInfo.title) + "&creator=" + encodeURIComponent(requestInfo.author);
       if (library.newDesign) {
-          searchUrl = `https://thunder.api.overdrive.com/v2/libraries/${libraryShortName}/media?query=${searchTerm}`;
+          searchUrl = "https://thunder.api.overdrive.com/v2/libraries/" + libraryShortName + "/media?query=" + searchTerm;
       } else {
          searchTerm = requestInfo.title + " " + requestInfo.author;
          searchUrl = "http://" + library.url + "/BANGSearch.dll?Type=FullText&FullTextField=All&more=1&FullTextCriteria=" + encodeURIComponent(searchTerm);

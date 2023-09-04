@@ -102,7 +102,30 @@ function getOverdriveAvailability() {
 		var id = "SINGLEBOOK";
 
 		// inject the table we're going to populate
-		document.querySelector('.BookPageMetadataSection__description').insertAdjacentHTML("afterend", "<div id='AGtable'><table><tr><td valign=top><b>Libby Availability:</b></td></tr><tr><td style='padding-left:10px;white-space:nowrap' valign=top class='AGAVAIL" + id + "'>" + libraryDivPlaceholders + "</td></tr></table></div>");
+		let agDiv = document.createElement("div");
+		agDiv.id = "AGtable";
+		let agTab = document.createElement("table");
+		let agTrOne = document.createElement("tr");
+		let agTdTop = document.createElement("td");
+		agTdTop.valign = "top";
+		agTdTop.innerHTML = "<b>Libby Availability:</b>";
+		agTrOne.appendChild(agTdTop);
+		agTab.appendChild(agTrOne);
+		let agTrTwo = document.createElement("tr");
+		let agTdBottom = document.createElement("td");
+		agTdBottom.style.paddingLeft = "10px";
+		agTdBottom.style.whitespace = "nowrap";
+		agTdBottom.valign = "top";
+		agTdBottom.className = "AGAVAIL" + id;
+		agTdBottom.innerHTML = libraryDivPlaceholders;
+		agTrTwo.appendChild(agTdBottom);
+		//agTrTwo.innerHTML = "<td style='padding-left:10px;white-space:nowrap' valign=top class='AGAVAIL" + id + "'>" + libraryDivPlaceholders + "</td>";
+		agTab.appendChild(agTrTwo);
+		agDiv.appendChild(agTab);
+		console.debug(agDiv);
+
+		// document.querySelector('.BookPageMetadataSection__description').insertAdjacentHTML("afterend", "<div id='AGtable'><table><tr><td valign=top><b>Libby Availability:</b></td></tr><tr><td style='padding-left:10px;white-space:nowrap' valign=top class='AGAVAIL" + id + "'>" + libraryDivPlaceholders + "</td></tr></table></div>");
+		document.querySelector('.BookPageMetadataSection__description').insertAdjacentElement("afterend", agDiv);
 		// send a message for the background page to make the request
 		chrome.runtime.sendMessage({
 			type: "FROM_AG_PAGE",
@@ -118,7 +141,7 @@ function getOverdriveAvailability() {
 			var author = element.querySelector('[itemprop=author]').textContent;
 
 			// set a "Loading..." message for this listing
-			element.querySelector(".communityRating").parentElement.insertAdjacentHTML("afterend","<div id='AGtable'><table><tr><td valign=top><b>Libby Availability:</b></td></tr><tr><td style='padding-left:10px' valign=top class='AGAVAIL" + id + "'>" + libraryDivPlaceholders + "</td></tr></table></div>");
+			element.querySelector(".communityRating").parentElement.insertAdjacentHTML("afterend", "<div id='AGtable'><table><tr><td valign=top><b>Libby Availability:</b></td></tr><tr><td style='padding-left:10px' valign=top class='AGAVAIL" + id + "'>" + libraryDivPlaceholders + "</td></tr></table></div>");
 			// send a message for the background page to make the request
 			chrome.runtime.sendMessage({
 				type: "FROM_AG_PAGE",
