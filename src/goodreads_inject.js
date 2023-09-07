@@ -19,6 +19,30 @@ function debugConsole(stuff) {
     }
 }
 
+function addSettingsButton(elem, position) {
+    let settingsButtonDiv = document.createElement("div");
+    settingsButtonDiv.classList.add("AGF_settings");
+    let settingsLink = document.createElement("a");
+    settingsLink.target = "_blank";
+    settingsLink.href = chrome.runtime.getURL("src/options/index.html");
+    let settingsImg = document.createElement("img");
+    settingsImg.classList.add("AGimg");
+    settingsImg.src = chrome.runtime.getURL('icons/icon25.png');
+    settingsImg.title = "Available Reads Settings";
+    settingsImg.alt = "Available Reads Settings";
+    settingsImg.style.width = "16px";
+    settingsImg.style.height = "16px";
+    settingsLink.appendChild(settingsImg);
+    if (elem == "form#perPageForm"){
+        settingsLink.append(" Available Reads Settings");
+    }
+    settingsButtonDiv.appendChild(settingsLink);
+    debugConsole(settingsButtonDiv);
+    if (document.querySelector(elem)){
+        document.querySelector(elem).insertAdjacentElement(position, settingsButtonDiv);
+    }
+}
+
 function sortRowsByStatus() {
 	var sortAsc = true;
 	if (document.querySelector("#AGsort").classList.contains("AGasc")) {
@@ -99,6 +123,7 @@ function getOverdriveAvailability() {
 
 	// if a single book page
 	if (showOnPages["descriptionPage"] && book && !document.querySelector("div#AGtable")) {
+        addSettingsButton(".BookPageMetadataSection__description", "afterend");
 		var id = "SINGLEBOOK";
 
 		// inject the table we're going to populate
@@ -119,12 +144,9 @@ function getOverdriveAvailability() {
 		agTdBottom.className = "AGAVAIL" + id;
 		agTdBottom.innerHTML = libraryDivPlaceholders;
 		agTrTwo.appendChild(agTdBottom);
-		//agTrTwo.innerHTML = "<td style='padding-left:10px;white-space:nowrap' valign=top class='AGAVAIL" + id + "'>" + libraryDivPlaceholders + "</td>";
 		agTab.appendChild(agTrTwo);
 		agDiv.appendChild(agTab);
-		console.debug(agDiv);
-
-		// document.querySelector('.BookPageMetadataSection__description').insertAdjacentHTML("afterend", "<div id='AGtable'><table><tr><td valign=top><b>Libby Availability:</b></td></tr><tr><td style='padding-left:10px;white-space:nowrap' valign=top class='AGAVAIL" + id + "'>" + libraryDivPlaceholders + "</td></tr></table></div>");
+		debugConsole(agDiv);
 		document.querySelector('.BookPageMetadataSection__description').insertAdjacentElement("afterend", agDiv);
 		// send a message for the background page to make the request
 		chrome.runtime.sendMessage({
@@ -168,6 +190,7 @@ function getOverdriveAvailability() {
 			});
 		});
 	} else if (showOnPages["shelfPage"] && bookshelves && bookshelves.length > 0) { // else if on my book shelf page
+        addSettingsButton("form#perPageForm", "beforebegin");
 		// inject the table column we're going to populate
 		if (!document.querySelector("th.overdrive")) {
 			document.querySelector("th.avg_rating").insertAdjacentHTML("afterend",'<th class="header field overdrive"><a href="#" id=AGsort>libby</a></th>');
@@ -245,6 +268,7 @@ function injectAvailableReads() {
 		loaded = true;
 			// if document has been loaded, inject CSS styles
 			document.getElementsByTagName('body')[0].insertAdjacentHTML("beforebegin", `<style>
+                div.AGF_settings a{text-decoration:none;}
                 #AGtable a{text-decoration:none}
                 div#AGtable {visibility:visible;display:block;}
                 div#AGtable > table {width:100%;}
@@ -259,25 +283,13 @@ function injectAvailableReads() {
 				.AGtitle{display:none;}
 				font:hover span.AGtitle{z-index:999;background-color:white;position: absolute;margin-left:10px;margin-top:-1px;padding-left:5px;padding-right:5px;display:inline;border:thin solid #c6c8c9}
 				.flip-vertical {-moz-transform: scaleY(-1);-webkit-transform: scaleY(-1);-o-transform: scaleY(-1);transform: scaleY(-1);-ms-filter: flipv; /*IE*/filter: flipv;}
-                #AG2_settings a{text-decoration:none;}
 				</style>`);
-        // let's put the settings button in place
-        if (document.querySelector("#buyButtonContainer")){
-            document.querySelector("#buyButtonContainer").insertAdjacentHTML("beforebegin", `<div id='AG2_settings'><a target='_blank' href='${chrome.runtime.getURL("src/options/index.html")}'><img id='AGimg' src='${chrome.runtime.getURL('icons/icon25.png')}' style='width:16px;height:16px' title='Available Goodreads settings'></a></div>`);
-        }
-        if (document.querySelector("#bookLinks")){
-            document.querySelector("#bookLinks").insertAdjacentHTML("beforebegin", `<div id='AG2_settings'><a target='_blank' href='${chrome.runtime.getURL("src/options/index.html")}'><img id='AGimg' src='${chrome.runtime.getURL('icons/icon25.png')}' style='width:16px;height:16px' title='Available Goodreads settings'></a></div>`);
-        }
-        if (document.querySelector(".BookPageMetadataSection__description")){
-            document.querySelector(".BookPageMetadataSection__description").insertAdjacentHTML("afterend", `<div id='AG2_settings'><a target='_blank' href='${chrome.runtime.getURL("src/options/index.html")}'><img id='AGimg' src='${chrome.runtime.getURL('icons/icon25.png')}' style='width:16px;height:16px' title='Available Goodreads settings'></a></div>`);
-        }
-        if (document.querySelector("form#perPageForm")){
-            document.querySelector("form#perPageForm").insertAdjacentHTML("beforebegin", `<div id='AG2_settings'><a target='_blank' href='${chrome.runtime.getURL("src/options/index.html")}'><img id='AGimg' src='${chrome.runtime.getURL('icons/icon25.png')}' style='width:16px;height:16px' title='Available Goodreads settings'> Available Goodreads settings</a></div>`);
-        }
 		chrome.storage.sync.get("debugMode", function(obj){
 			debugMode = obj["debugMode"];
 			debugging = debugMode["debug"];
 		});
+        addSettingsButton("#bookLinks", "beforebegin");
+
 		chrome.storage.sync.get("showOnPages", function(obj) {
 			showOnPages = obj["showOnPages"];
 			chrome.storage.sync.get("showFormat",function(obj) {
