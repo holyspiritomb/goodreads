@@ -21,7 +21,8 @@
     "page": "src/options/index.html"
   },
   "permissions": [
-    "storage"
+    "storage",
+    "*://www.goodreads.com/*"
   ],
   "content_scripts": [
     {
