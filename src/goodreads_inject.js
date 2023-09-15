@@ -13,7 +13,7 @@ var loaded = false;
 
 function debugConsole(stuff) {
     if (debugging){
-        console.debug(stuff);
+        console.log("AGF debug:", stuff);
     } else {
         return;
     }
@@ -120,6 +120,7 @@ function getOverdriveAvailability() {
 	var booklist = document.querySelectorAll('.responsiveBook');
 	var booklist2 = document.querySelectorAll('table.tableList tr');
 	var bookshelves = document.querySelectorAll('div#shelvesSection');
+    var bookshelvesMobile = document.querySelectorAll('html.mobile ul.bookList');
 
 	// if a single book page
 	if (showOnPages["descriptionPage"] && book && !document.querySelector("div#AGtable")) {
@@ -189,11 +190,13 @@ function getOverdriveAvailability() {
 				author: cleanAuthorForSearch(author)
 			});
 		});
+	} else if (showOnPages["shelfPage"] && bookshelvesMobile && bookshelvesMobile.length > 0) { // else if on my book shelf page
+        addSettingsButton("ul.responsiveSiteFooter__linkList", "beforebegin");
 	} else if (showOnPages["shelfPage"] && bookshelves && bookshelves.length > 0) { // else if on my book shelf page
         addSettingsButton("form#perPageForm", "beforebegin");
 		// inject the table column we're going to populate
 		if (!document.querySelector("th.overdrive")) {
-			document.querySelector("th.avg_rating").insertAdjacentHTML("afterend",'<th class="header field overdrive"><a href="#" id=AGsort>libby</a></th>');
+			document.querySelector("th.avg_rating").insertAdjacentHTML("afterend",'<th class="header field overdrive libby"><a href="#" id=AGsort>libby</a></th>');
 
 			// if the header is clicked to sort the column
 			document.querySelector("#AGsort").addEventListener("click", function(e) {
@@ -303,7 +306,7 @@ function injectAvailableReads() {
 						}
 						var libraryName = libraries[l].url.replace(/\..*/, '');
 						// load placeholders for different library results
-						libraryDivPlaceholders += "<div class='" + libraryName;
+						libraryDivPlaceholders += "<div class='AGLibraryDiv " + libraryName;
 
 						if (libraries.length == 1) {
 							libraryDivPlaceholders += "'><font color=lightgray><small><i><span class=status>Loading...</i></span></small></font></div>";
