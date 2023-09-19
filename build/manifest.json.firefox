@@ -11,18 +11,19 @@
     "128": "icons/icon128.png"
   },
   "background": {
-    "scripts": ["src/background.js"]
+    "scripts": [
+      "src/background.js"
+    ]
   },
   "action": {
-      "default_title": "Available Reads Forked Settings",
-      "default_popup": "src/options/index.html"
+    "default_title": "Available Reads Forked Settings",
+    "default_popup": "src/options/index.html"
   },
   "options_ui": {
     "page": "src/options/index.html"
   },
   "permissions": [
-    "storage",
-    "*://www.goodreads.com/*"
+    "storage"
   ],
   "content_scripts": [
     {
