@@ -16,7 +16,7 @@
     ]
   },
   "action": {
-    "default_title": "Available Reads Forked Settings",
+    "default_title": "Available Reads Forked",
     "default_popup": "src/options/index.html"
   },
   "options_ui": {
