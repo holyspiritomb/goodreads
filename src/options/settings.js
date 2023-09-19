@@ -1,6 +1,13 @@
 var libraryCheckInterval = null;
 var oldLibraries = null;
 
+if (typeof browser == "undefined") {
+  // `browser` is not defined in Chrome, but Manifest V3 extensions in Chrome
+  // also support promises in the `chrome` namespace, like Firefox. To easily
+  // test the example without modifications, polyfill "browser" to "chrome".
+  globalThis.browser = chrome;
+}
+
 // load and display newest settings
 function loadLibraries() {
 	chrome.storage.sync.get("libraries", function(obj) {
@@ -108,6 +115,8 @@ function validateInput() {
 	$("button").prop('disabled', true);
     $("#exportButton").prop('disabled', false);
     $("#importButton").prop('disabled', false);
+    // $("#requestPerm").prop('disabled', false);
+    $("#showPerm").prop('disabled', false);
 	$("#errorText").hide();
 	$("#successText").hide();
 	// when a library is selected, populate input fields
@@ -125,6 +134,11 @@ function validateInput() {
 			validateInput();
 		});
 	});
+    $("#showPerm").click(function() {
+        browser.permissions.getAll().then((permissions) => {
+            document.getElementById('permBox').innerText = JSON.stringify(permissions);
+        });
+    });
 
 	chrome.storage.sync.get("showOnPages", function(obj) {
 		var showOnPages = obj["showOnPages"];
