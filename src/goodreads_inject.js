@@ -306,7 +306,7 @@ function injectAvailableReads() {
 						}
 						var libraryName = libraries[l].url.replace(/\..*/, '');
 						// load placeholders for different library results
-						libraryDivPlaceholders += "<div class='AGLibraryDiv " + libraryName;
+						libraryDivPlaceholders += "<div class='" + libraryName;
 
 						if (libraries.length == 1) {
 							libraryDivPlaceholders += "'><font color=lightgray><small><i><span class=status>Loading...</i></span></small></font></div>";
