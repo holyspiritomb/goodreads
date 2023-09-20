@@ -4,3 +4,4 @@ dist/
 *.crx
 *.pem
 web-ext-artifacts/
+build/manifest_old.json.*
