@@ -65,6 +65,7 @@
   "browser_specific_settings": {
     "gecko": {
       "id": "availablereads@holyspiritomb"
-    }
+    },
+    "gecko_android": {}
   }
 }
