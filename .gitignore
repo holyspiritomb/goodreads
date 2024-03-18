@@ -5,3 +5,6 @@ dist/
 *.pem
 web-ext-artifacts/
 build/manifest_old.json.*
+node_modules
+.env
+package-lock.json

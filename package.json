@@ -1,0 +1,18 @@
+{
+  "repository": "github:holyspiritomb/goodreads",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "build:firefox": "cd ./build && ./build_firefox.sh",
+    "build:chrome": "cd ./build && ./build_chrome.sh",
+    "start:firefox": "web-ext run --source-dir ./dist/",
+    "lint": "web-ext lint -s dist",
+    "sign:firefox": "web-ext sign --api-key $WEB_EXT_API_KEY --api-secret $WEB_EXT_API_SECRET -s dist --channel listed",
+    "run:iceraven": "web-ext run -t firefox-android --adb-device $WEB_EXT_ADB_DEVICE --firefox-apk io.github.forkmaintainers.iceraven -s dist"
+  },
+  "devDependencies": {
+    "web-ext": "^7.11.0"
+  },
+  "dependencies": {
+    "jquery": "^3.7.1"
+  }
+}
