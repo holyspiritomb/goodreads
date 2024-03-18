@@ -384,10 +384,10 @@ chrome.runtime.onMessage.addListener(function(message, sender, sendResponse) {
 
         let availColor;
         let holdColor;
-        if (darkThemeMq.matches){
+        if (darkThemeMq.matches) {
             availColor = "limegreen";
             holdColor = "orange";
-        } else
+        } else {
             availColor = "#080";
             holdColor = "#C80";
         }
@@ -450,8 +450,8 @@ chrome.runtime.onMessage.addListener(function(message, sender, sendResponse) {
 	let libbyMessageUrl = odSearchToLibby(message.url);
 	document.querySelector("td.AGAVAIL" + message.id + " div." + message.libraryShortName).innerHTML = '<a target="_blank" href="' + libbyMessageUrl + '">' + listingStr + '</a>';
 
-	row = document.querySelector("tr#" + message.id);
-	oldScore = row.getAttribute("AGsortScore");
+	let row = document.querySelector("tr#" + message.id);
+	let oldScore = row.getAttribute("AGsortScore");
 	if (!oldScore || sortScore < oldScore) {
 		row.setAttribute("AGsortScore", sortScore);
 	}
