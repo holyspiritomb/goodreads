@@ -380,21 +380,33 @@ chrome.runtime.onMessage.addListener(function(message, sender, sendResponse) {
 			audioClass = "";
 		}
 
+        const darkThemeMq = window.matchMedia("(prefers-color-scheme: dark)");
+
+        let availColor;
+        let holdColor;
+        if (darkThemeMq.matches){
+            availColor = "limegreen";
+            holdColor = "orange";
+        } else
+            availColor = "#080";
+            holdColor = "#C80";
+        }
+
 		var copiesStr = "";
 		if (book.alwaysAvailable) { // if always available
-			copiesStr = "color=#080><span class=status>always available</span>";
+			copiesStr = `color=${availColor}><span class=status>always available</span>`;
 			newScore += -1;
 		} else if (book.holds != null && book.holds >= 0) { // if there's a wait list with count
-			copiesStr = "color=#C80><span class=status>" + book.holds + "/" + book.totalCopies + " holds</span>";
+			copiesStr = `color=${holdColor}><span class=status>` + book.holds + "/" + book.totalCopies + " holds</span>";
 			newScore += 1000 + book.holds / book.totalCopies;
 		} else if (book.holds && isNaN(book.holds)) { // if there's a wait list with no count
-			copiesStr = "color=#C80><span class=status>place hold</span>";
+			copiesStr = `color=${holdColor}><span class=status>place hold</span>`;
 			newScore += 1000;
 		} else if (book.totalCopies > 0) { // if available copies found with count
-			copiesStr = "color=#080><span class=status>" + book.totalCopies + " available</span>";
+			copiesStr = `color=${availColor}><span class=status>` + book.totalCopies + " available</span>";
 			newScore += -1;
 		} else if (book.totalCopies) { // if available copies found with no count
-			copiesStr = "color=#080><span class=status>available</span>";
+			copiesStr = `color=${availColor}><span class=status>available</span>`;
 			newScore += -1;
 		} else if (!book.totalCopies && showFormat['multipleNotFounds']) { // if no copies found
 			listingStr = "<font class='AGnone AGresult' color=gray><span class=status>not found</span><hr width=10px class=AGline><span class='AGtitle'>searched for: " + message.searchTerm + "</span></font>";
