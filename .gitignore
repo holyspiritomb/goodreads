@@ -8,3 +8,4 @@ build/manifest_old.json.*
 node_modules
 .env
 package-lock.json
+web-ext-config.js

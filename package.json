@@ -9,7 +9,7 @@
     "start:firefox": "npm run build:firefox && web-ext run",
     "lint:ff": "npm run build:firefox && web-ext lint",
     "lint:src": "eslint -c ./.eslintrc.json ./src",
-    "sign:firefox": "npm run build:firefox && web-ext-submit --api-key=\"$WEB_EXT_API_KEY\" --api-secret=\"$WEB_EXT_API_SECRET\" --channel listed",
+    "sign:firefox": "npm run build:firefox && web-ext-submit",
     "run:iceraven": "npm run build:firefox && web-ext run -t firefox-android --adb-device=\"$WEB_EXT_ADB_DEVICE\" --firefox-apk io.github.forkmaintainers.iceraven"
   },
   "devDependencies": {
@@ -20,8 +20,5 @@
   },
   "dependencies": {
     "jquery": "^3.7.1"
-  },
-  "webExt": {
-    "sourceDir": "dist"
   }
 }
