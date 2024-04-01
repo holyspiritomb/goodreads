@@ -28,5 +28,5 @@
             {"after": true, "before": false}
         ]
     },
-    "ignorePatterns": ["jquery.min.js", "**/lib/*", "**/js/*"],
+    "ignorePatterns": ["jquery.min.js", "**/lib/*", "**/js/*"]
 }
