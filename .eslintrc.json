@@ -19,7 +19,7 @@
             {"vars": "local", "args": "all"}
         ],
         "semi": [
-            "error",
+            "warn",
             "always",
             {"omitLastInOneLineBlock": true}
         ],
