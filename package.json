@@ -6,11 +6,11 @@
     "build:firefox": "cd ./build && ./build_firefox.sh",
     "build:chrome": "cd ./build && ./build_chrome.sh",
     "pack:chrome": "npm run build:chrome && crx3 -p dist.pem dist",
-    "start:firefox": "npm run build:firefox && web-ext run",
-    "lint:ff": "npm run build:firefox && web-ext lint",
+    "start:firefox": "npm run build:firefox && web-ext --config=web-ext-config.cjs run",
+    "lint:ff": "npm run build:firefox && web-ext --config=web-ext-config.cjs lint",
     "lint:src": "eslint -c ./.eslintrc.json ./src",
-    "sign:firefox": "npm run build:firefox && web-ext-submit",
-    "run:iceraven": "npm run build:firefox && web-ext run -t firefox-android --adb-device=\"$WEB_EXT_ADB_DEVICE\" --firefox-apk io.github.forkmaintainers.iceraven"
+    "sign:firefox": "npm run build:firefox && web-ext-submit --config=web-ext-config.cjs",
+    "run:iceraven": "npm run build:firefox && web-ext --config=web-ext-config.cjs run -t firefox-android --adb-device=\"$WEB_EXT_ADB_DEVICE\" --firefox-apk io.github.forkmaintainers.iceraven"
   },
   "devDependencies": {
     "crx3": "^1.1.3",
