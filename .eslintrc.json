@@ -27,5 +27,6 @@
             "warn",
             {"after": true, "before": false}
         ]
-    }
+    },
+    "ignorePatterns": ["jquery.min.js", "**/lib/*", "**/js/*"],
 }
