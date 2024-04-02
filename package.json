@@ -1,6 +1,6 @@
 {
   "repository": "github:holyspiritomb/goodreads",
-  "version": "2.0.8",
+  "version": "2.0.9",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "build:firefox": "cd ./build && ./build_firefox.sh",
