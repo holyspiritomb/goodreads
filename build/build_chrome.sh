@@ -5,7 +5,7 @@ pushd .. > /dev/null
 rm -rf dist
 rm -f availablereads-chrome.zip
 
-cp node_modules/jquery/dist/jquery.min.js src/options/
+cp node_modules/jquery/dist/jquery.min.js src/options/lib/
 
 mkdir dist
 cp -r src dist/
