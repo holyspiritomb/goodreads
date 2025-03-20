@@ -222,7 +222,6 @@ function validateInput() {
 			$("#deleteButton").prop('disabled', false);
 		} else {
 			$("#deleteButton").prop('disabled', true);
-
 		}
 	});
 
@@ -271,8 +270,8 @@ function validateInput() {
 		var libraryName = $("#nameText").val().replace(/[^ -~]+/g, "");
 		chrome.storage.sync.get("libraries", function(obj) {
 			var libraries = obj["libraries"];
-			libraryUrl = $("#urlText").val().replace(/^https?:\/\//, '').replace(/overdrive.com.*/, 'overdrive.com').replace(/libraryreserve.com.*/, 'libraryreserve.com');
-			newDesign = !$("#newDesign").prop("checked");
+			let libraryUrl = $("#urlText").val().replace(/^https?:\/\//, '').replace(/overdrive.com.*/, 'overdrive.com').replace(/libraryreserve.com.*/, 'libraryreserve.com');
+			let newDesign = !$("#newDesign").prop("checked");
 			libraries[libraryName] = {
 				url: libraryUrl,
 				newDesign: newDesign
